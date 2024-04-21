@@ -8,3 +8,10 @@ const PORT = 5500;
 app.listen(PORT, () => {
 	console.log("Server started.");
 });
+
+app.get("/test", async (req, res) => {
+	res.status(200).json({
+		'response': "Valid",
+		'id': "0000"
+	});
+});
