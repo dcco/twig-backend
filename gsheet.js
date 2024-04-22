@@ -4,6 +4,7 @@ var fs = require('fs');
 
 	// EXPRESS SERVER constants
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = 5500;
 
@@ -13,6 +14,8 @@ const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 var API_KEY = '0000';
 
 	// API setup
+app.use(cors());
+
 app.listen(PORT, () => {
 	console.log("Server started.");
 	var secret = JSON.parse(fs.readFileSync('secret.json', 'utf8'));
