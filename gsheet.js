@@ -29,6 +29,55 @@ app.get("/test", async (req, res) => {
 	});
 });
 
+function sheetGet(sheetReq) {
+	return async (req, res) => {
+		try {
+			const sheets = google.sheets({ version: 'v4', auth: API_KEY });
+			response = await sheets.spreadsheets.values.get(sheetReq);
+			res.status(200).json({
+				'response': "Valid",
+				'res': response.data
+			});
+		} catch (err) {
+			res.status(404).json({
+				'response': "Error",
+				'err': err
+			})
+		}
+	};
+}
+
+function sheetGetFull(sheetReq) {
+	return async (req, res) => {
+		try {
+			const sheets = google.sheets({ version: 'v4', auth: API_KEY });
+			response = await sheets.spreadsheets.get(sheetReq);
+			res.status(200).json({
+				'response': "Valid",
+				'res': response.data.sheets
+			});
+		} catch (err) {
+			res.status(404).json({
+				'response': "Error",
+				'err': err
+			})
+		}
+	};
+}
+
+
+app.get("/xcams", sheetGet({
+	spreadsheetId: '1J20aivGnvLlAuyRIMMclIFUmrkHXUzgcDmYa31gdtCI',
+	ranges: 'Ultimate Star Spreadsheet v2!A2:D526'
+}));
+
+app.get("/up_rta", sheetGetFull({
+	spreadsheetId: '1v2ZBecZmuBy8eE8DZE5PaBuCW5NFaobWIchqahdcUQY',
+	ranges: ['Up RTA!B2:I12'],
+	includeGridData: true
+}));
+
+/*
 app.get("/xcams", async (req, res) => {
 	try {
 		const sheets = google.sheets({ version: 'v4', auth: API_KEY });
@@ -47,3 +96,22 @@ app.get("/xcams", async (req, res) => {
 		})
 	}
 });
+
+app.get("/xcams", async (req, res) => {
+	try {
+		const sheets = google.sheets({ version: 'v4', auth: API_KEY });
+		response = await sheets.spreadsheets.values.get({
+			spreadsheetId: '1J20aivGnvLlAuyRIMMclIFUmrkHXUzgcDmYa31gdtCI',
+			range: 'Ultimate Star Spreadsheet v2!A2:D526',
+		});
+		res.status(200).json({
+			'response': "Valid",
+			'res': response.data
+		});
+    } catch (err) {
+		res.status(404).json({
+			'response': "Error",
+			'err': err
+		})
+	}
+});*/
